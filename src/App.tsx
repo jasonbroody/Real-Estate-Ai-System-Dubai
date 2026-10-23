@@ -1,130 +1,24 @@
-import React, { useState } from 'react';
-import { Header } from './components/Header';
-import { DashboardOverview } from './components/DashboardOverview';
-import { WhatsAppSimulator } from './components/WhatsAppSimulator';
-import { SharedInbox } from './components/SharedInbox';
-import { AutomationEngine } from './components/AutomationEngine';
-import { InventoryManager } from './components/InventoryManager';
-import { BrokerAttributionPortal } from './components/BrokerAttributionPortal';
-import { OwnerServiceDesk } from './components/OwnerServiceDesk';
-import { PartnerFigmaSpecModal } from './components/PartnerFigmaSpecModal';
-import { ProjectUnit } from './types/realestate';
-import { 
-  Smartphone, 
-  FileText, 
-  ShieldCheck, 
-  Sparkles, 
-  MessageSquare,
-  Building2,
-  ExternalLink
-} from 'lucide-react';
-
-export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [isSpecModalOpen, setIsSpecModalOpen] = useState<boolean>(false);
-  const [syncedUnit, setSyncedUnit] = useState<ProjectUnit | null>(null);
-
-  const handleSendToWhatsApp = (unit: ProjectUnit) => {
-    setSyncedUnit(unit);
-    setActiveTab('simulator');
-  };
-
-  return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col text-slate-900 selection:bg-emerald-100 selection:text-emerald-900">
-      {/* Top Header */}
-      <Header
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onOpenSpecModal={() => setIsSpecModalOpen(true)}
-        onOpenSimulator={() => setActiveTab('simulator')}
-      />
-
-      {/* Main Workspace Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Workspace Toolbar / Quick Context Strip */}
-        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs text-xs">
-          <div className="flex items-center gap-3">
-            <span className="font-semibold text-slate-700">Dubai Developer Portal:</span>
-            <span className="font-mono text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
-              Apex Developments LLC (RERA Reg #1042)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-slate-600">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="font-mono">Meta Cloud API: Connected</span>
-            </div>
-            <span>·</span>
-            <button
-              onClick={() => setIsSpecModalOpen(true)}
-              className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-1"
-            >
-              <FileText className="w-3.5 h-3.5 text-amber-500" />
-              Partner Brief & Figma Spec
-            </button>
-          </div>
-        </div>
-
-        {/* Tab Content Panes */}
-        {activeTab === 'dashboard' && (
-          <DashboardOverview
-            onNavigate={(tab) => setActiveTab(tab)}
-            onOpenSimulator={() => setActiveTab('simulator')}
-          />
-        )}
-
-        {activeTab === 'simulator' && (
-          <WhatsAppSimulator
-            onOfferGenerated={(unitCode) => {
-              console.log('Offer generated for:', unitCode);
-            }}
-          />
-        )}
-
-        {activeTab === 'inbox' && <SharedInbox />}
-
-        {activeTab === 'automations' && <AutomationEngine />}
-
-        {activeTab === 'inventory' && (
-          <InventoryManager onSendToWhatsApp={handleSendToWhatsApp} />
-        )}
-
-        {activeTab === 'brokers' && <BrokerAttributionPortal />}
-
-        {activeTab === 'owners' && <OwnerServiceDesk />}
-      </main>
-
-      {/* Minimalist Professional Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800 font-display">AcrePulse AI</span>
-            <span>—</span>
-            <span>WhatsApp Operating System for Dubai Real Estate Developers</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1 text-slate-600">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              DLD Escrow Compliant
-            </span>
-            <span>·</span>
-            <button
-              onClick={() => setIsSpecModalOpen(true)}
-              className="hover:text-slate-900 transition-colors font-medium text-emerald-800"
-            >
-              Figma Designer Guidelines
-            </button>
-          </div>
-        </div>
-      </footer>
-
-      {/* Partner & Figma Specification Modal */}
-      <PartnerFigmaSpecModal
-        isOpen={isSpecModalOpen}
-        onClose={() => setIsSpecModalOpen(false)}
-      />
-    </div>
-  );
+'use client';
+import { useState } from 'react';
+import { ArrowUpRight, ArrowRight, Play, Menu, X, Check, MessageCircle, Users, ShieldCheck, Database, Headphones, ChevronDown } from 'lucide-react';
+import { brand, personas, capabilities, faqs, type Persona } from './data/presentation';
+import { Logo, Tabs } from './components/PresentationUI';
+import { SystemDiagram } from './components/SystemDiagram';
+import { WorkflowDemo } from './components/WorkflowDemo';
+import { DeveloperPreview } from './components/DeveloperPreview';
+import { PilotDialog } from './components/PilotDialog';
+export default function App(){
+  const [menu,setMenu]=useState(false); const [pilot,setPilot]=useState(false); const [audience,setAudience]=useState<Persona>('Buyer'); const [launch,setLaunch]=useState(0);
+  const cap=capabilities[audience];
+  const links=[['The Platform','platform'],['How It Works','how-it-works'],['Interactive Demo','demo'],['Developer Dashboard','dashboard'],['FAQs','faqs']];
+  return <><a className="skip-link" href="#main">Skip to content</a><header className="site-header"><div className="nav-wrap"><a href="#" aria-label="EstateFlow AI home"><Logo/></a><nav className={menu?'open':''} aria-label="Main navigation" id="navigation">{links.map(([text,id])=><a key={id} href={`#${id}`} onClick={()=>setMenu(false)}>{text}</a>)}<button className="mobile-pilot" onClick={()=>{setPilot(true);setMenu(false);}}>Explore a Pilot <ArrowUpRight size={15}/></button></nav><button className="button nav-cta" onClick={()=>setPilot(true)}>Explore a Pilot <ArrowUpRight size={16}/></button><button className="menu-toggle icon-button" aria-label={menu?'Close navigation':'Open navigation'} aria-expanded={menu} aria-controls="navigation" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button></div></header>
+    <main id="main"><section className="hero section"><div className="hero-copy"><span className="hero-kicker"><span className="status-dot"/>{brand.region}</span><h1>Your entire<br/>property business.<br/><em>One WhatsApp<br className="desktop-break"/> number.</em></h1><p>Every enquiry. Every relationship. One connected flow.<br className="wide-break"/> AI-powered conversations for buyers, brokers, owners<br className="wide-break"/> and your team—with people always in control.</p><div className="hero-actions"><a className="button primary" href="#demo" onClick={()=>setLaunch(n=>n+1)}><Play size={15}/>Watch the Automation<ArrowUpRight size={16}/></a><a className="text-link" href="#platform">Explore the Platform <ArrowRight size={17}/></a></div><div className="hero-trust"><span><ShieldCheck size={15}/> Your rules, always</span><span><Users size={15}/> Human by design</span></div></div><SystemDiagram/></section>
+    <div className="promise-strip"><div><span>ONE COMPANY NUMBER.</span><p>Every property conversation.<br/><em>AI that moves business forward.</em></p></div><div><span>BUILT AROUND YOUR BUSINESS</span><p>From the first enquiry<br/>to life after handover.</p></div><a href="#how-it-works" aria-label="See how EstateFlow works"><ArrowRight size={24}/></a></div>
+    <section id="platform" className="section platform-section"><div className="section-heading"><div><span className="eyebrow">01 / ONE PLATFORM, FOUR RELATIONSHIPS</span><h2>Different conversations.<br/><em>The same connected business.</em></h2></div><p>More than answering questions.<br/>A thoughtful next step for everyone you work with.</p></div><Tabs items={personas} active={audience} onChange={setAudience} label="Platform relationships" prefix="platform"/><div className="capability-layout" id="platform-panel" role="tabpanel" aria-labelledby={`platform-tab-${personas.indexOf(audience)}`}><div className="capability-image"><img src="/assets/images/dubai_luxury_waterfront_tower_1792651572619.jpg" alt="Dubai waterfront architecture illustrating a developer’s residential project"/><div className="image-overlay"><span>DUBAI & THE UAE</span><h3>Built for the people<br/>behind the places.</h3><span className="image-caption">Illustrative property imagery</span></div></div><div className="capability-copy"><h3>{cap.headline}</h3><p>{cap.copy}</p><div className="capability-list">{cap.groups.map((g,i)=><div key={g.title}><span>0{i+1}</span><div><h4>{g.title}</h4><p>{g.text}</p></div><ArrowUpRight size={17}/></div>)}</div></div></div></section>
+    <section id="how-it-works" className="how-section"><div className="section"><div className="section-heading"><div><span className="eyebrow">02 / FROM MESSAGE TO MOMENTUM</span><h2>It starts with a message.<br/><em>It goes further with context.</em></h2></div><a className="text-link" href="#demo">See the workflow <ArrowUpRight size={17}/></a></div><div className="workflow-grid">{[['01','Understand','Recognise the person, the intent and what needs to happen next.',MessageCircle],['02','Verify','Check identity, entitlement and project permissions before sharing.',ShieldCheck],['03','Retrieve','Bring in approved knowledge and the latest authorised system records.',Database],['04','Act','Progress permitted tasks. Confirm only when the system confirms.',ArrowUpRight]].map(([n,t,d,Icon])=>{const I=Icon as typeof MessageCircle;return <div key={n as string}><div className="workflow-top"><span>{n as string}</span><I size={22}/></div><h3>{t as string}</h3><p>{d as string}</p></div>;})}</div><div className="workflow-footer"><Headphones size={19}/><p>A person can step in at any point. <span>AI pauses. The history, requirements and next task come with the conversation.</span></p></div></div></section>
+    <WorkflowDemo launch={launch}/><DeveloperPreview/>
+    <section className="control-section section"><div><span className="eyebrow">05 / YOUR BUSINESS. YOUR BOUNDARIES.</span><h2>Intelligent by design.<br/><em>Accountable by default.</em></h2><p>You define the knowledge, commercial rules and permissions.<br/>The platform works within them.</p><div className="control-stamp"><ShieldCheck size={29}/><span>People decide.<br/>Technology follows through.</span></div></div><div className="control-list">{[['Access is earned, not assumed.','Verified brokers see permitted projects. Owners verify entitlement. Staff operate within roles. Each developer’s private data stays separate.'],['A request is not a confirmation.','An offer is not a reservation. A payment screenshot is not confirmed payment. Stale information triggers a recheck or escalation.'],['Exceptions stay with your people.','Authorised employees approve commercial exceptions. Important actions leave an audit trail. AI uses approved terms, never unapproved discounts.']].map(([t,d])=><div key={t}><Check size={18}/><div><h4>{t}</h4><p>{d}</p></div></div>)}</div></section>
+    <section className="pilot-section"><div className="section"><div className="pilot-intro"><span className="eyebrow">06 / START WITH A FOCUSED PILOT</span><h2>Your next chapter.<br/><em>One conversation away.</em></h2><p>One month free for every new developer company.</p><button className="button lime" onClick={()=>setPilot(true)}>Explore a Pilot <ArrowUpRight size={17}/></button></div><div className="setup-steps">{[['Connect','Your official number and approved systems.'],['Configure','Projects, people, knowledge and commercial rules.'],['Test','Selected workflows, permissions and handovers.'],['Activate','Your agreed pilot, ready for your team.']].map(([t,d],i)=><div key={t}><span>0{i+1}</span><div><h4>{t}</h4><p>{d}</p></div><ArrowUpRight size={19}/></div>)}<p className="trial-terms">The trial begins after the agreed setup is ready and activated. Scope, limits and subsequent commercial terms are agreed beforehand. Third-party operating costs still apply.</p></div></div></section>
+    <section id="faqs" className="section faq-section"><div><span className="eyebrow">A FEW THINGS, ANSWERED</span><h2>Clarity comes<br/><em>first.</em></h2><p>Good partnerships start<br/>with shared expectations.</p></div><div className="faq-list">{faqs.map(([q,a])=><details key={q}><summary>{q}<span><ChevronDown size={18}/></span></summary><p>{a}</p></details>)}</div></section></main>
+    <footer className="footer"><div><a href="#" aria-label="Return to top"><Logo/></a><p>One company number. Every property conversation.</p><a href="#demo">Explore the experience <ArrowUpRight size={15}/></a></div><div><span>© 2026 {brand.name} {brand.suffix} · Concept brand</span><span>Frontend prototype. Fictional data. Simulated integrations.</span><span>Designed for Dubai & the UAE.</span></div></footer><PilotDialog open={pilot} onClose={()=>setPilot(false)}/></>;
 }
