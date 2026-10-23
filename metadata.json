@@ -1,0 +1,6 @@
+{
+  "name": "AcrePulse AI — Dubai Developer WhatsApp OS",
+  "description": "Unified WhatsApp AI automation platform for Dubai real estate developers, handling buyer sales, broker network inventory, lead attribution, and owner handover from a single official number.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
